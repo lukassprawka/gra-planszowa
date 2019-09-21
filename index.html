@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gra planszowa</title>
 </head>
+
 <body>
-    
-    <script src="js/main.js"></script>
+    <section>
+        <button id="startButton" onclick="startGame()">Nowa gra</button>
+        <button id="endButton" onclick="endGame()" disabled>Zakończ</button>
+    </section>
+
+    <section>
+        <p>Wykonaj rzut kostką klikając przycisk "Rzuć kostką" lub podaj liczbę oczek od 1 do 6.</p>
+        <button id="rollButton" onclick="rollTheDice()" disabled>Rzuć kostką</button>
+        <div>
+            <input id="rollInput" type="text" onkeypress="useGivenRollIfPressedKeyIsEnter(event)" disabled
+                placeholder="Podaj liczbę od 1 do 6">
+            <button id="specifyRollButton" onclick="useGivenRoll()" disabled>
+                Podaj liczbę wyrzuconych oczek
+            </button>
+        </div>
+    </section>
+
+    <script src="main.js"></script>
 </body>
+
 </html>
