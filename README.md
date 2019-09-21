@@ -4,7 +4,7 @@
 * [Uruchomienie](#uruchomienie)
 
 ## Opis projektu
-* Projekt do zadania opisanego poniżej:
+Projekt do zadania opisanego poniżej:
 * Należy stworzyć aplikację, która będzie symulowała grę planszową.
 * Parametrem wejściowym powinna być liczba wyrzuconych oczek klasyczną kostką sześcienną.
 * Plansza ma 20 pól. Pola 12 i 19 są polami specjalnymi.
