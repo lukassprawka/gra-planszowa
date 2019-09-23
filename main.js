@@ -7,28 +7,55 @@ class GameField {
 
 class BoardGame {
     constructor() {
-        this.board = this.createBoard();
+        this.board = [];
         this.position = 0;
         this.rolls = [];
         this.gameInProgres = true;
+    }
+
+    startGame = function () {
+        this.createBoard();
+        const rollNumberElement = document.getElementById("rollNumber");
+        rollNumberElement.innerText = "";
         console.clear();
         console.log("Nowa gra");
     }
 
     createBoard = function () {
-        let array = [];
+        const boardElement = document.getElementById('board');
+        while (boardElement.firstChild) {
+            boardElement.removeChild(boardElement.firstChild);
+        }
+        const startFieldElement = document.createElement("div");
+        startFieldElement.setAttribute("id", 0);
+        startFieldElement.className = "gameField startField activePosition";
+        const textElement = document.createElement("span");
+        textElement.innerText = "Start";
+        startFieldElement.append(textElement);
+        boardElement.append(startFieldElement);
+
+        let boardGameFields = [];
         for (let i = 1; i <= 20; i++) {
             let gameField = new GameField(i);
-            array.push(gameField);
+            boardGameFields.push(gameField);
+            const fieldElement = document.createElement("div");
+            fieldElement.setAttribute("id", i);
+            fieldElement.className = "gameField";
+            const textElement = document.createElement("span");
+            textElement.innerText = i;
+            fieldElement.append(textElement);
+            boardElement.append(fieldElement);
         }
-        array = this.setSpecialFields(array);
-        return array;
+        boardGameFields = this.setSpecialFields(boardGameFields);
+        this.board = boardGameFields;
     }
 
-    setSpecialFields = function (array) {
+    setSpecialFields = function (boardGameFields) {
         const specialFields = [{
                 number: 12,
                 fn: () => {
+                    const message = "12 to pole specjalne, gra zakończona porażką.\n Liczba rzutów: " + this.rolls.length + "\n Średnia liczba wyrzuconych oczek: " + this.calculateAvarageRoll(this.rolls);
+                    alert(message);
                     console.log("...");
                     console.log("12 to pole specjalne, gra zakończona porażką.")
                     this.endGame();
@@ -37,16 +64,22 @@ class BoardGame {
             {
                 number: 19,
                 fn: () => {
+                    const previousActiveFieldElement = document.getElementById(this.position);
+                    previousActiveFieldElement.classList.remove("activePosition");
+                    const auctualActiveFieldElement = document.getElementById(11);
+                    auctualActiveFieldElement.className += " activePosition";
+                    const message = "19 to pole specjalne, przenosisz się na pole 11."
+                    alert(message);
                     this.position = 11;
                     console.log("19 to pole specjalne, przenosisz się na pole 11.");
                 }
             }
         ];
         specialFields.forEach((specialField) => {
-            const gameField = array.find(el => el.number === specialField.number);
+            const gameField = boardGameFields.find(el => el.number === specialField.number);
             gameField.special = specialField.fn;
         });
-        return array;
+        return boardGameFields;
     }
 
     rollTheDice = function () {
@@ -75,6 +108,8 @@ class BoardGame {
     }
 
     play = function (roll) {
+        const rollNumberElement = document.getElementById("rollNumber");
+        rollNumberElement.innerText = roll;
         this.rolls.push(roll);
         console.log("...");
         console.log("Liczba wyrzuconych oczek: " + roll);
@@ -87,6 +122,7 @@ class BoardGame {
         if (newPosition > 20) {
             newPosition = 20 - (previousPosition + roll - 20);
         } else if (newPosition === 20) {
+            this.setActiveElement(previousPosition, newPosition);
             console.log("...");
             console.log("Jesteś na pozycji 20, gra zakończona sukcesem.")
             this.endGame();
@@ -94,10 +130,18 @@ class BoardGame {
         }
         this.position = newPosition;
         console.log("Jesteś na pozycji: " + newPosition);
+        this.setActiveElement(previousPosition, this.position);
         const gameField = this.board.find(el => el.number === newPosition);
         if (gameField.special) {
             gameField.special();
         }
+    }
+
+    setActiveElement = function (previousPosition, actualPosition) {
+        const previousActiveFieldElement = document.getElementById(previousPosition);
+        previousActiveFieldElement.classList.remove("activePosition");
+        const auctualActiveFieldElement = document.getElementById(actualPosition);
+        auctualActiveFieldElement.className += " activePosition";
     }
 
     calculateAvarageRoll = function (rollsArray) {
@@ -108,6 +152,8 @@ class BoardGame {
 
     endGame = function () {
         this.gameInProgres = false;
+        const message = "Gra zakończona sukcesem\n Liczba rzutów: " + this.rolls.length + "\n Średnia liczba wyrzuconych oczek: " + this.calculateAvarageRoll(this.rolls);
+        alert(message);
         console.log("...");
         console.log("Liczba rzutów: " + this.rolls.length);
         console.log("Średnia liczba wyrzuconych oczek: " + this.calculateAvarageRoll(this.rolls));
@@ -120,6 +166,7 @@ let boardGame;
 
 const startGame = function () {
     boardGame = new BoardGame();
+    boardGame.startGame();
     manageButtons();
 }
 

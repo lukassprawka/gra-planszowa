@@ -17,9 +17,14 @@
             <button id="endButton" onclick="endGame()" disabled>Zakończ</button>
         </section>
 
+        <section id="board">
+
+        </section>
+
         <section>
             <p>Wykonaj rzut kostką klikając przycisk "Rzuć kostką" lub podaj liczbę oczek od 1 do 6.</p>
             <button id="rollButton" onclick="rollTheDice()" disabled>Rzuć kostką</button>
+            <span id="rollNumber"></span>
             <div>
                 <input id="rollInput" type="text" onkeypress="useGivenRollIfPressedKeyIsEnter(event)" disabled
                     placeholder="Podaj liczbę od 1 do 6">
