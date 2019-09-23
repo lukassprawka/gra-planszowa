@@ -54,11 +54,8 @@ class BoardGame {
         const specialFields = [{
                 number: 12,
                 fn: () => {
-                    const message = "12 to pole specjalne, gra zakończona porażką.\n Liczba rzutów: " + this.rolls.length + "\n Średnia liczba wyrzuconych oczek: " + this.calculateAvarageRoll(this.rolls);
-                    alert(message);
-                    console.log("...");
-                    console.log("12 to pole specjalne, gra zakończona porażką.")
-                    this.endGame();
+                    const message = "...\n12 to pole specjalne, gra zakończona porażką. "
+                    this.endGame(message);
                 }
             },
             {
@@ -68,10 +65,10 @@ class BoardGame {
                     previousActiveFieldElement.classList.remove("activePosition");
                     const auctualActiveFieldElement = document.getElementById(11);
                     auctualActiveFieldElement.className += " activePosition";
-                    const message = "19 to pole specjalne, przenosisz się na pole 11."
+                    const message = "...\n19 to pole specjalne, przenosisz się na pole 11."
+                    console.log(message);
                     alert(message);
                     this.position = 11;
-                    console.log("19 to pole specjalne, przenosisz się na pole 11.");
                 }
             }
         ];
@@ -101,8 +98,9 @@ class BoardGame {
                 this.play(roll);
                 break;
             default:
-                console.log("...");
-                console.log("Niepoprawna liczba oczek. Podaj liczbę od 1 do 6");
+                const message = "...\nNiepoprawna liczba oczek. Podaj liczbę od 1 do 6."
+                console.log(message);
+                alert(message);
         }
         rollInput.value = ""
     }
@@ -111,8 +109,7 @@ class BoardGame {
         const rollNumberElement = document.getElementById("rollNumber");
         rollNumberElement.innerText = roll;
         this.rolls.push(roll);
-        console.log("...");
-        console.log("Liczba wyrzuconych oczek: " + roll);
+        console.log("...\nLiczba wyrzuconych oczek: " + roll);
         this.calculatePosition(roll);
     }
 
@@ -123,9 +120,8 @@ class BoardGame {
             newPosition = 20 - (previousPosition + roll - 20);
         } else if (newPosition === 20) {
             this.setActiveElement(previousPosition, newPosition);
-            console.log("...");
-            console.log("Jesteś na pozycji 20, gra zakończona sukcesem.")
-            this.endGame();
+            const message = "... \nJesteś na pozycji 20, gra zakończona sukcesem. "
+            this.endGame(message);
             return;
         }
         this.position = newPosition;
@@ -150,13 +146,12 @@ class BoardGame {
         return avarage ? Math.round(avarage) : 0;
     }
 
-    endGame = function () {
+    endGame = function (message = "") {
         this.gameInProgres = false;
-        const message = "Gra zakończona sukcesem\n Liczba rzutów: " + this.rolls.length + "\n Średnia liczba wyrzuconych oczek: " + this.calculateAvarageRoll(this.rolls);
+        const averageRoll = this.calculateAvarageRoll(this.rolls);
+        message = message + "\nLiczba rzutów: " + this.rolls.length + "\nŚrednia liczba wyrzuconych oczek: " + averageRoll;
+        console.log(message);
         alert(message);
-        console.log("...");
-        console.log("Liczba rzutów: " + this.rolls.length);
-        console.log("Średnia liczba wyrzuconych oczek: " + this.calculateAvarageRoll(this.rolls));
     }
 
 }
