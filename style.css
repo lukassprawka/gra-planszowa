@@ -33,7 +33,7 @@ input {
     width: 3rem;
     height: 3rem;
     border: 1px dotted silver;
-    display: inline-block
+    display: inline-block;
 }
 
 .startField {
@@ -41,5 +41,5 @@ input {
 }
 
 .activePosition {
-    border: 1px solid blueviolet
+    border: 1px solid blueviolet;
 }
