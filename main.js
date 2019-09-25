@@ -27,7 +27,7 @@ class ConsoleGameRenderer {
     end() {}
 }
 class DOMGameRenderer {
-    start() {
+    start(numberOfGameFIelds) {
         this.renderRollNumber("");
         const boardElement = document.getElementById('board');
         while (boardElement.firstChild) {
@@ -40,7 +40,7 @@ class DOMGameRenderer {
         textElement.innerText = "Start";
         startFieldElement.append(textElement);
         boardElement.append(startFieldElement);
-        for (let i = 1; i <= 20; i++) {
+        for (let i = 1; i <= numberOfGameFIelds; i++) {
             const fieldElement = document.createElement("div");
             fieldElement.setAttribute("id", i);
             fieldElement.className = "gameField";
@@ -84,8 +84,8 @@ class GameRenderers {
         this.renderers = renderers;
     }
 
-    start() {
-        this.renderers.forEach(renderer => renderer.start());
+    start(numberOfGameFIelds) {
+        this.renderers.forEach(renderer => renderer.start(numberOfGameFIelds));
     }
 
     renderRollNumber(rollNumber) {
@@ -103,7 +103,6 @@ class GameRenderers {
     end() {
         this.renderers.forEach(renderer => renderer.end());
     }
-
 }
 
 class BoardGame {
@@ -112,6 +111,7 @@ class BoardGame {
         this.position;
         this.rolls;
         this.gameInProgres;
+        this.numberOfGameFIelds;
     }
 
     startGame() {
@@ -119,13 +119,14 @@ class BoardGame {
         this.position = 0;
         this.rolls = [];
         this.gameInProgres = true;
+        this.numberOfGameFIelds = 20;
         this.createBoard();
-        renderers.start();
+        renderers.start(this.numberOfGameFIelds);
     }
 
     createBoard() {
         let boardGameFields = [];
-        for (let i = 1; i <= 20; i++) {
+        for (let i = 1; i <= this.numberOfGameFIelds; i++) {
             let gameField = new GameField(i);
             boardGameFields.push(gameField);
         }
@@ -190,11 +191,13 @@ class BoardGame {
     calculatePosition = function (roll) {
         let previousPosition = this.position;
         let newPosition = previousPosition + roll;
-        if (newPosition > 20) {
-            newPosition = 20 - (previousPosition + roll - 20);
-        } else if (newPosition === 20) {
+        const lastFieldNumber = this.numberOfGameFIelds;
+        if (newPosition > lastFieldNumber) {
+            newPosition = lastFieldNumber - (previousPosition + roll - lastFieldNumber);
+            // newPosition = Math.abs(lastFieldNumber - (previousPosition + roll));
+        } else if (newPosition === lastFieldNumber) {
             renderers.setActiveElement(previousPosition, newPosition);
-            const message = "... \nJesteś na pozycji 20, gra zakończona sukcesem. "
+            const message = "... \nJesteś na pozycji " + lastFieldNumber + ", gra zakończona sukcesem. "
             this.endGame(message);
             return;
         }
