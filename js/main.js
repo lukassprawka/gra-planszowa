@@ -3,24 +3,12 @@ const domRenderer = new DOMGameRenderer();
 const consoleRenderer = new ConsoleGameRenderer();
 const renderers = new GameRenderers([consoleRenderer, domRenderer])
 
-const startGame = function () {
-    boardGame.startGame();
-}
+const startGame = () => boardGame.startGame();
 
-const rollTheDice = function () {
-    boardGame.rollTheDice();
-}
+const rollTheDice = () => boardGame.rollTheDice();
 
-const useGivenRoll = function () {
-    boardGame.useGivenRoll();
-}
+const useGivenRoll = () => boardGame.useGivenRoll();
 
-const useGivenRollIfPressedKeyIsEnter = function (event) {
-    if (event.code === "Enter") {
-        useGivenRoll();
-    }
-}
+const useGivenRollIfPressedKeyIsEnter = (event) => event.code === "Enter" ? useGivenRoll() : 0;
 
-const endGame = function () {
-    boardGame.endGame();
-}
+const endGame = () => boardGame.endGame();
