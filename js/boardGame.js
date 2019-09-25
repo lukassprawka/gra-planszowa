@@ -81,7 +81,7 @@ class BoardGame {
         this.calculatePosition(roll);
     }
 
-    calculatePosition = function (roll) {
+    calculatePosition(roll) {
         let previousPosition = this.position;
         let newPosition = previousPosition + roll;
         const gameBoardWinNumber = this.numberOfGameFIelds;
