@@ -1,0 +1,14 @@
+.gameField {
+    width: 3rem;
+    height: 3rem;
+    border: 1px dotted silver;
+    display: inline-block;
+}
+
+.startField {
+    border: 1px solid seagreen;
+}
+
+.activePosition {
+    border: 1px solid blueviolet;
+}
