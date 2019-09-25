@@ -84,13 +84,15 @@ class BoardGame {
     calculatePosition = function (roll) {
         let previousPosition = this.position;
         let newPosition = previousPosition + roll;
-        const lastFieldNumber = this.numberOfGameFIelds;
-        if (newPosition > lastFieldNumber) {
-            newPosition = lastFieldNumber - (previousPosition + roll - lastFieldNumber);
-            // newPosition = Math.abs(lastFieldNumber - (previousPosition + roll));
-        } else if (newPosition === lastFieldNumber) {
+        const gameBoardWinNumber = this.numberOfGameFIelds;
+        if (newPosition > gameBoardWinNumber) {
+            const rollExcess = Math.abs(gameBoardWinNumber - (previousPosition + roll))
+            newPosition = gameBoardWinNumber - rollExcess;
+            const message = "...Docierasz do ostatniego pola o numerze " + gameBoardWinNumber + ". Pozostałe punty ruchu to " + rollExcess + ". Cofasz się o tę wartość.";
+            renderers.renderMessage(message);
+        } else if (newPosition === gameBoardWinNumber) {
             renderers.setActiveElement(previousPosition, newPosition);
-            const message = "... \nJesteś na pozycji " + lastFieldNumber + ", gra zakończona sukcesem. "
+            const message = "... \nJesteś na pozycji " + gameBoardWinNumber + ", gra zakończona sukcesem. "
             this.endGame(message);
             return;
         }
